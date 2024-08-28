@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "axios": "^1.7.5",
     "fastify": "^4.28.1",
     "typescript": "^5.5.4"
   },
