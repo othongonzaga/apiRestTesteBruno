@@ -3,6 +3,22 @@ import {Character, apiReturnRickandMorty} from '@interfaces/characters.interface
 
 const apiUrl = 'https://rickandmortyapi.com/api/character/'
 
+async function filterCharacters(response:apiReturnRickandMorty) {
+    let characters:Character[] = []
+
+    const filteredCharacters = await response.data.results.forEach((character: Character) => {characters.push({
+        id: character.id,
+        name: character.name,
+        species: character.species,
+        image: character.image,
+        location: {name: character.location.name},
+    })
+        
+    })
+      
+    return characters
+}
+
 export async function fetchCharacter() {
   try {
     const response: apiReturnRickandMorty = await axios.get(`${apiUrl}`)
@@ -11,13 +27,7 @@ export async function fetchCharacter() {
       return []
     }
 
-    const characters = response.data.results.forEach((character: Character) => ({
-      id: character.id,
-      name: character.name,
-      species: character.species,
-      image: character.image,
-      location: character.location.name,
-    }))
+    const characters = await filterCharacters(response)
 
     return characters
   } catch (error) {
@@ -38,13 +48,7 @@ export async function searchCharacter(name: string) {
   try {
     const response: apiReturnRickandMorty = await axios.get(`${apiUrl}?name=${name}`)
     
-    const characters = response.data.results.forEach((character: Character) => ({
-      id: character.id,
-      name: character.name,
-      species: character.species,
-      image: character.image,
-      location: character.location.name,
-    }))
+    const characters = await filterCharacters(response)
 
     return characters
   } catch (error) {
