@@ -1,7 +1,10 @@
 import axios from 'axios'
 import {Character, apiReturnRickandMorty} from '@interfaces/characters.interface'
+import dotenv from 'dotenv'
 
-const apiUrl = 'https://rickandmortyapi.com/api/character/'
+dotenv.config()
+
+const apiUrl = process.env.URL_API_RICK_AND_MORTY
 
 async function filterCharacters(response:apiReturnRickandMorty) {
     let characters:Character[] = []
@@ -43,6 +46,11 @@ export async function fetchCharacter() {
 export async function searchCharacter(name: string) {
   if (!name) {
     console.log('Parameter name is required')
+    return{
+        status: 400,
+        errorCode: "SC - 01",
+        errorMessage: "Parameter 'name' is required",
+    }
   }
 
   try {
@@ -55,7 +63,7 @@ export async function searchCharacter(name: string) {
     console.error('Erro integration with API:', error)
     return{
         status: 500,
-        errorCode: "SC - 01",
+        errorCode: "SC - 02",
         errorMessage: "Unexpected error in public provider",
     }
   }
